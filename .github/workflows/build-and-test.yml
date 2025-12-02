@@ -41,6 +41,7 @@ jobs:
       buildConfig: ${{ matrix.config }}
       resultBundle: ${{ format('ThreadLocal-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
       artifactname: ${{ format('ThreadLocal-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
+      spm-disable-prebuilts: true
   package_tests_linux:
     name: Build and Test Swift Package Linux (${{ matrix.config }})
     uses: StanfordBDHG/.github/.github/workflows/swift-test.yml@v2
