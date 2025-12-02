@@ -34,7 +34,7 @@ jobs:
           - name: watchOS
             destination: 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)'
     with:
-      runsonlabels: '["macOS", "self-hosted"]'
+      # runsonlabels: '["macOS", "self-hosted"]'
       scheme: ThreadLocal-Package
       destination: ${{ matrix.platform.destination }}
       buildConfig: ${{ matrix.config }}
