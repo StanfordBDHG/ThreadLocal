@@ -33,13 +33,15 @@ jobs:
             destination: 'platform=macOS,name=My Mac'
           - name: watchOS
             destination: 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)'
+      fail-fast: false
     with:
-      runsonlabels: '["macOS", "self-hosted"]'
-      scheme: ThreadLocal-Package
+      # runsonlabels: '["macOS", "self-hosted"]'
+      scheme: ThreadLocal
       destination: ${{ matrix.platform.destination }}
       buildConfig: ${{ matrix.config }}
-      resultBundle: ${{ format('ThreadLocal-Package-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
-      artifactname: ${{ format('ThreadLocal-Package-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
+      resultBundle: ${{ format('ThreadLocal-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
+      artifactname: ${{ format('ThreadLocal-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
+      spm-disable-prebuilts: true
   package_tests_linux:
     name: Build and Test Swift Package Linux (${{ matrix.config }})
     uses: StanfordBDHG/.github/.github/workflows/swift-test.yml@v2
@@ -47,13 +49,13 @@ jobs:
       matrix:
         config: [Debug, Release]
     with:
-      artifact_name: ${{ format('ThreadLocal-Package-Linux-{0}.lcov', matrix.config) }}
+      artifact_name: ${{ format('ThreadLocal-Linux-{0}.lcov', matrix.config) }}
   uploadcoveragereport:
     name: Upload Coverage Report
     needs: [package_tests, package_tests_linux]
     uses: StanfordBDHG/.github/.github/workflows/create-and-upload-coverage-report.yml@v2
     with:
-      coveragereports: ThreadLocal-Package-*.xcresult
-      coveragereports_lcov: ThreadLocal-Package-Linux-*.lcov
+      coveragereports: ThreadLocal-*.xcresult
+      coveragereports_lcov: ThreadLocal-Linux-*.lcov
     secrets:
       token: ${{ secrets.CODECOV_TOKEN }}
