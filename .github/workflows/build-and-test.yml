@@ -1,0 +1,59 @@
+#
+# This source file is part of the ThreadLocal open source project
+#
+# SPDX-FileCopyrightText: 2025 Lukas Kollmer and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+#
+
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: Build-and-Test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  package_tests:
+    name: Build and Test Swift Package ${{ matrix.platform.name }} (${{ matrix.config }})
+    uses: StanfordBDHG/.github/.github/workflows/xcodebuild-or-fastlane.yml@v2
+    strategy:
+      matrix:
+        config: [Debug, Release]
+        platform:
+          - name: iOS
+            destination: 'platform=iOS Simulator,name=iPhone 17 Pro'
+          - name: macOS
+            destination: 'platform=macOS,name=My Mac'
+          - name: watchOS
+            destination: 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)'
+    with:
+      runsonlabels: '["macOS", "self-hosted"]'
+      scheme: ThreadLocal-Package
+      destination: ${{ matrix.platform.destination }}
+      buildConfig: ${{ matrix.config }}
+      resultBundle: ${{ format('ThreadLocal-Package-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
+      artifactname: ${{ format('ThreadLocal-Package-{0}-{1}.xcresult', matrix.platform.name, matrix.config) }}
+  package_tests_linux:
+    name: Build and Test Swift Package Linux (${{ matrix.config }})
+    uses: StanfordBDHG/.github/.github/workflows/swift-test.yml@v2
+    strategy:
+      matrix:
+        config: [Debug, Release]
+    with:
+      artifact_name: ${{ format('ThreadLocal-Package-Linux-{0}.lcov', matrix.config) }}
+  uploadcoveragereport:
+    name: Upload Coverage Report
+    needs: [package_tests, package_tests_linux]
+    uses: StanfordBDHG/.github/.github/workflows/create-and-upload-coverage-report.yml@v2
+    with:
+      coveragereports: ThreadLocal-Package-*.xcresult
+      coveragereports_lcov: ThreadLocal-Package-Linux-*.lcov
+    secrets:
+      token: ${{ secrets.CODECOV_TOKEN }}

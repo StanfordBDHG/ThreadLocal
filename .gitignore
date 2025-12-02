@@ -1,8 +1,34 @@
-.DS_Store
-/.build
-/Packages
+#
+# This source file is part of the ThreadLocal open source project
+#
+# SPDX-FileCopyrightText: 2025 Lukas Kollmer and the project authors (see CONTRIBUTORS.md)
+#
+# SPDX-License-Identifier: MIT
+# 
+
+# Swift Package Manager
+Package.resolved
+*.xcodeproj
+.swiftpm
+.build
+.xcodebuild
+.derivedData
+coverage.lcov
+*.xcresult
+
+# IDE related folders
+.idea
+
+# Xcode User settings
 xcuserdata/
-DerivedData/
-.swiftpm/configuration/registries.json
-.swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
-.netrc
+
+# Other files
+.DS_Store
+.env
+
+# Documentation generation
+*.doccarchive
+docs/
+
+# UITests Project
+!UITests.xcodeproj
