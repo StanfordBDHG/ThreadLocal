@@ -1,7 +1,7 @@
 #
 # This source file is part of the ThreadLocal open source project
 #
-# SPDX-FileCopyrightText: 2025 Lukas Kollmer and the project authors (see CONTRIBUTORS.md)
+# SPDX-FileCopyrightText: 2025 Stanford University and the project authors (see CONTRIBUTORS.md)
 #
 # SPDX-License-Identifier: MIT
 #
@@ -35,7 +35,7 @@ jobs:
             destination: 'platform=watchOS Simulator,name=Apple Watch Series 11 (46mm)'
       fail-fast: false
     with:
-      # runsonlabels: '["macOS", "self-hosted"]'
+      runsonlabels: '["macOS", "self-hosted"]'
       scheme: ThreadLocal
       destination: ${{ matrix.platform.destination }}
       buildConfig: ${{ matrix.config }}
@@ -48,6 +48,7 @@ jobs:
     strategy:
       matrix:
         config: [Debug, Release]
+      fail-fast: false
     with:
       artifact_name: ${{ format('ThreadLocal-Linux-{0}.lcov', matrix.config) }}
   uploadcoveragereport:
