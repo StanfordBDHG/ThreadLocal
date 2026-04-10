@@ -14,7 +14,11 @@ let package = Package(
     name: "ThreadLocal",
     platforms: [
         .macOS(.v14),
-        .iOS(.v17)
+        .iOS(.v17),
+        .macCatalyst(.v17),
+        .watchOS(.v10),
+        .visionOS(.v1),
+        .tvOS(.v17)
     ],
     products: [
         .library(name: "ThreadLocal", targets: ["ThreadLocal"])
