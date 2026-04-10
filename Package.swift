@@ -20,7 +20,7 @@ let package = Package(
         .library(name: "ThreadLocal", targets: ["ThreadLocal"])
     ],
     dependencies: [
-        .package(url: "https://github.com/swiftlang/swift-syntax.git", from: "602.0.0")
+        .package(url: "https://github.com/swiftlang/swift-syntax.git", "601.0.0"..<"604.0.0")
     ],
     targets: [
         .macro(
